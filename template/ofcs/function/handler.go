@@ -1,32 +1,17 @@
 package function
 
 import (
-	"io/ioutil"
-	"log"
 	"os"
+	"strconv"
 )
 
 // Handle a serverless request
 func Handle(req []byte) string {
-	name := getName()
-
-	key := os.Getenv("debug")
-	if key != "" {
-		secretFile, secretValue := getSecret(key)
-
-		log.Printf("secretValue: %s [%s]\n%s\n", key, secretFile, secretValue)
+	debug, _ := strconv.ParseBool(os.Getenv("debug"))
+	if debug {
+		return getName()
 	}
-
-	return name
-}
-
-func getSecret(key string) (string, string) {
-	file := "/var/openfaas/secrets/" + key
-	apiKey, err := ioutil.ReadFile(file)
-	if err != nil {
-		log.Printf("error reading secret api-key %s\n", err)
-	}
-	return file, string(apiKey)
+	return "OK"
 }
 
 func getName() string {
