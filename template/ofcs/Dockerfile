@@ -1,3 +1,4 @@
+FROM dxdx/env-tester:v0.0.2 as env-tester
 FROM openfaas/classic-watchdog:0.18.0 as watchdog
 
 FROM golang:1.11-alpine3.10 as builder
@@ -29,6 +30,7 @@ RUN mkdir -p /home/app
 
 WORKDIR /home/app
 
+COPY --from=env-tester /usr/bin/env-tester /usr/bin/env-tester
 COPY --from=builder /usr/bin/fwatchdog         .
 COPY --from=builder /go/src/handler/function/  .
 COPY --from=builder /go/src/handler/handler    .
