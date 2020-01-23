@@ -34,6 +34,7 @@ COPY --from=env-tester /usr/bin/env-tester /usr/bin/env-tester
 COPY --from=builder /usr/bin/fwatchdog         .
 COPY --from=builder /go/src/handler/function/  .
 COPY --from=builder /go/src/handler/handler    .
+COPY test-env.sh /usr/local/bin/test-env
 
 RUN chown -R app /home/app
 
